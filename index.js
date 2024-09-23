@@ -14,7 +14,7 @@ const questionTime = 10;
 
 let score = 0;
 let currentQuestionIndex = 0;
-let remainingTime = totalTime;
+let timeRemaining = totalTime;
 let quizInterval;
 let questionTimeout;
 
@@ -23,8 +23,8 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-function askQuestion() {
-    if (currentQuestionIndex >= questions.length || remainingTime <= 0) {
+function startQuestions() {
+    if (currentQuestionIndex >= questions.length || timeRemaining <= 0) {
         endQuiz();
         return;
     }
@@ -67,7 +67,7 @@ function isValidAnswer(answer, numChoices) {
 
 function nextQuestion() {
     currentQuestionIndex++;
-    askQuestion();
+    startQuestions();
 }
 
 
@@ -75,18 +75,18 @@ function startQuiz() {
     console.log(`Starting quiz! Total time: ${totalTime}s`);
 
     quizInterval = setInterval(() => {
-        remainingTime--;
+        timeRemaining--;
         process.stdout.clearLine();
         process.stdout.cursorTo(0);
-        process.stdout.write(`Total time remaining: ${remainingTime}s`);
+        process.stdout.write(`Total time remaining: ${timeRemaining}s`);
         
-        if (remainingTime === 0) {
+        if (timeRemaining === 0) {
             clearInterval(quizInterval);
             endQuiz();
         }
     }, 1000);
 
-    askQuestion(); 
+    startQuestions(); 
 }
 
 
